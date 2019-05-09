@@ -592,7 +592,6 @@ void BTreeNode::splitChild(int i, BTreeNode * y)
 // Function to traverse all nodes in a subtree rooted with this node 
 void BTreeNode::traverse(ofstream & rewrite)
 {
-	string row;
 	// There are n keys and n+1 children, travers through n keys 
 	// and first n children 
 	int i;
@@ -603,12 +602,8 @@ void BTreeNode::traverse(ofstream & rewrite)
 		if (leaf == false)
 			C[i]->traverse(rewrite);
 		rewrite << keys[i].key << ",";
-		row += keys[i].key;
-		row += ",";
 		for (int j = 0; j < keys[i].vek.size(); j++) {
 			rewrite << keys[i].vek[j] << ",";
-			row += keys[i].vek[j];
-			row += ",";
 		}
 		rewrite << "\n";
 	}
@@ -1011,7 +1006,7 @@ void main()
 	}
 	else {
 		int quanity;
-		out.open("DataBase.txt", ios_base::trunc);
+		//out.open("DataBase.txt", ios_base::trunc);
 		cout << "Creating database..." << endl;
 		cout << "How much random elements to enter?" << endl;
 		cin >> quanity;
@@ -1022,6 +1017,7 @@ void main()
 		}
 
 	}
+	//out.open("DataBase.txt", ios_base::trunc);
 	char answer, editChoice;
 	while (true) {
 		int key, n1, n2;
@@ -1097,6 +1093,7 @@ void main()
 			break;
 		case '6':
 			cout << "Saving database..." << endl;
+			out.open("DataBase.txt", ios_base::trunc);
 			t.traverse(out);
 			fin.close();
 			out.close();
