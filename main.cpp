@@ -661,11 +661,16 @@ BTreeNode* BTreeNode::search(int k)
 		i++;
 	}
 	// If the found key is equal to k, return this node 
-	if (keys[i].key == k) return this;
+	if (keys[i].key == k) {
+		g_count++;
+		return this;
+	}
 
 	// If key is not found here and this is a leaf node 
-	if (leaf == true)
+	if (leaf == true) {
+		//g_count++;
 		return nullptr;
+	}
 
 	// Go to the appropriate child 
 	return C[i]->search(k);
@@ -698,32 +703,6 @@ void BTree::remove(int k)
 	return;
 }
 
-//void BTreeNode::addValue(int key, int value)
-//{
-//	int index = 0;
-//	for (int i = 0; i < this->n; i++) {
-//		index = i;
-//		if (this->keys[i].key == key);
-//		break;
-//	}
-//	this->keys[index].vek.push_back(value);
-//}
-//
-//void BTreeNode::delValue(int key, int value)
-//{
-//	int indexK = 0;
-//	
-//	for (int i = 0; i < this->n; i++) {
-//		indexK = i;
-//		if (this->keys[indexK].key == key)
-//		break;
-//	}
-//	for (int j = 0; j < this->keys->vek.size(); j++) {
-//		if (this->keys[indexK].vek[j] == value) {
-//			this->keys[indexK].vek.erase(this->keys[indexK].vek.begin() + j);
-//		}
-//	}
-//}
 void BTree::addValue(int key, int value)
 {
 	BTreeNode* q = search(key);
@@ -753,7 +732,8 @@ void BTree::delValue(int key, int value)
 		}
 	}
 }
-vector<int> BTree::searchFor(int k) {
+
+/*vector<int> BTree::searchFor(int k) {
 	BTreeNode* q = search(k);
 	vector<int> empty;
 	if (q == nullptr) return empty;
@@ -776,10 +756,10 @@ vector<int> BTree::searchFor(int k) {
 	if (q->keys[i].key == k) return q->keys[i].vek;
 	/*for (int i = 0; i < q->n; i++) {
 		if (q->keys[i].key == k) return q->keys[i].vek;
-	}*/
+	}
 	return empty;
 }
-
+*/
 bool BTree::check(vector<elem>test, int k) {
 	if (search(k) != NULL) return true;
 	return false;
@@ -803,20 +783,33 @@ vector<int> BTree::interpolationSearch(int k)
 	int right = q->n - 1;  // правая граница поиска 
 
 	while (q->keys[left].key < k && k < q->keys[right].key) {
+		g_count++;
 		int mid = (int)(left + (k - q->keys[left].key) * (right - left) / (q->keys[right].key - q->keys[left].key));  // индекс элемента, с которым будем проводить сравнение 
-		if (q->keys[mid].key < k)
+		if (q->keys[mid].key < k) {
 			left = mid + 1;
-		else if (q->keys[mid].key > k)
+			g_count++;
+		}
+		else if (q->keys[mid].key > k) {
+			g_count++;
 			right = mid - 1;
-		else
+		}
+		else {
+			//g_count++;
 			return q->keys[mid].vek;
+		}
 	}
-	if (q->keys[left].key == k)
+	if (q->keys[left].key == k) {
+		g_count++;
 		return q->keys[left].vek;
-	else if (q->keys[right].key == k)
+	}
+	else if (q->keys[right].key == k) {
+		g_count++;
 		return q->keys[right].vek;
-	else
+	}
+	else {
+		//g_count++;
 		return nullVector;
+	}
 }
 
 void sort(vector<int> & search) {
@@ -1089,7 +1082,9 @@ void main()
 			for (int i = 0; i < values.size(); i++) {
 				cout << values[i] << " ";
 			}
+			cout << "Comparison number : " << g_count << endl;
 			cout << endl;
+			g_count = 0;
 			break;
 		case '6':
 			cout << "Saving database..." << endl;
